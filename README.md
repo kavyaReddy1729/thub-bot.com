@@ -1,1 +1,1 @@
-# thub-bot.com
+# thubbot.com
