@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-w/KfQg+7XUWc5v5ckVU5rCFuKL8InpAFcgtztc3qjAAk1ZnXwjSyW2fz+S7EuFgjnB/CtfV0WpPcYvPR3Kj1ug==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <meta charset="UTF-8">
+    <title>Chat UI Example</title>
+    <style>
+        /* Style the chat container */
+        .chat-container {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 15px;
+            width: 280px;
+            overflow-y: scroll;
+            height: 400px;
+        }
+
+        /* Style the sender messages */
+        .sender {
+            font-family: Sans-serif;
+            background-color: #5c48db;
+            border-radius: 7px;
+            padding: 10px;
+            margin-bottom: 10px;
+            text-align: right;
+            width: fit-content;
+            margin-left: auto;
+            color: white;
+            max-width: 600px;
+        }
+
+        /* Style the receiver messages */
+        .receiver {
+            font-family: Sans-serif;
+            background-color: #f2f2f2;
+            border-radius: 7px;
+            padding: 10px;
+            margin-bottom: 10px;
+            width: fit-content;
+            text-align: left;
+            white-space: pre-wrap;
+
+
+        }
+
+        /* Style the message input field */
+        .message-input {
+            display: flex;
+            margin-top: 10px;
+            width: 310px;
+        }
+
+        /* Style the message input field */
+        .message-input input {
+            flex-grow: 1;
+            margin-right: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+        }
+
+        /* Style the message input button */
+        .message-input button {
+            width: 80px;
+        }
+
+        .my-button {
+            background-color: black;
+            /* Green background color */
+            border: none;
+            /* Remove borders */
+            color: white;
+            /* White text color */
+            padding: 12px;
+            /* Add padding */
+            text-align: center;
+            /* Center text */
+            text-decoration: none;
+            /* Remove underline */
+            display: inline-block;
+            /* Display as inline-block */
+            font-size: 16px;
+            /* Font size */
+            /* margin: 4px 2px; */
+            /* Add margin */
+            /* Add cursor */
+            border-radius: 5px;
+            /* Add border radius */
+        }
+
+        .loading {
+            display: flex;
+            margin-top: 400px;
+            margin-bottom: 5px;
+            position: absolute;
+            justify-content: flex-start;
+            align-items: flex-end;
+        }
+
+
+        .loading .dots {
+            height: 12px;
+            width: 12px;
+            display: block;
+            background: grey;
+            justify-content: flex-start;
+            border-radius: 80px;
+            animation-name: opacityDots;
+            animation-duration: 2.5s;
+            animation-iteration-count: infinite;
+            animation-fill-mode: both;
+            margin: 0 5px;
+
+        }
+
+        .loading .dots:nth-child(1) {
+
+            animation-delay: 0.3s;
+        }
+
+        .loading .dots:nth-child(2) {
+            animation-delay: 0.6s;
+        }
+
+        .loading .dots:nth-child(3) {
+            animation-delay: 0.9s;
+        }
+
+        .loading .dots:nth-child(4) {
+            animation-delay: 1.2s;
+        }
+
+        .loading .dots:nth-child(5) {
+            animation-delay: 1.5s;
+        }
+
+        @keyframes opacityDots {
+            0% {
+                opacity: 0.2;
+                transform: scale(0.5);
+            }
+
+            20% {
+                opacity: 1.0;
+                transform: scale(1);
+            }
+
+            100% {
+                opacity: 0.2;
+                transform: scale(0.5);
+            }
+        }
+
+        /* Hide loading by default */
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="chat-container">
+
+        <div class="receiver">Hi, I am JamesHardie Chatbot! I can help you with JamesHardie Questions.</div>
+        <div class="loading hidden">
+            <span class="dots"></span>
+            <span class="dots"></span>
+            <span class="dots"></span>
+            <span class="dots"></span>
+            <span class="dots"></span>
+        </div>
+    </div>
+
+    <div class="message-input">
+        <input type="text" placeholder="Send your message...">
+        <button class="my-button">Send</button>
+        <i class="fas fa-paper-plane"></i>
+
+
+    </div>
+
+    <script>
+        const inputField = document.querySelector(".message-input input");
+        const sendButton = document.querySelector(".message-input button");
+        const chatContainer = document.querySelector(".chat-container");
+
+        function sendMessage() {
+            console.log("*************")
+
+            const message = inputField.value;
+            if (message.trim() === "") {
+                return;
+            }
+
+            var formData = new FormData();
+            const newMessage = document.createElement("div");
+            newMessage.classList.add("sender");
+            newMessage.textContent = message;
+            console.log("messageeeee!!!", message)
+            chatContainer.appendChild(newMessage);
+            inputField.value = "";
+            formData.append("chat_bot", "James_bot")
+            formData.append("question", message)
+            console.log("out response!!!")
+            let data = {
+                chat_bot: "James_bot",
+                question: message
+            };
+            const loading = document.querySelector('.loading');
+            loading.classList.remove('hidden');
+            let url = "https://15e8-103-217-239-66.ngrok-free.app/wix_langchain_method/";
+            //fetch(url,{method: 'POST'})
+            fetch(url, {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => {
+                    // Handle API response
+
+                    return response.json();
+                })
+                .then(data => {
+                    // Handle API data
+                    const newMessage1 = document.createElement("div");
+                    newMessage1.classList.add("receiver");
+
+                    let sentence = data['message'];
+                    sentence = sentence.replace(/^\n+/, "");
+                    //if sentence.startswith('\n'):  # Check if sentence starts with "\n"
+                    //sentence = sentence[1:]
+                    console.log("sentence", sentence);
+                    //sentence = sentence.replaceAll("\n", "<br>");
+                    const words = sentence.split(" ");
+                    //console.log("words", words);
+                    let i = 0;
+                    let s = '';
+                    loading.classList.add('hidden');
+                    printNextWord();
+
+                    function printNextWord() {
+                        console.log(words[i]);
+
+                        if (i < words.length) {
+                            s = s + ' ' + words[i]
+                            console.log("s!!!", s)
+                            setTimeout(printNextWord, 100);
+                            newMessage1.textContent = s;
+                            newMessage1.style.lineHeight = "1.7";
+                            newMessage1.style.width = "600px";
+                            chatContainer.appendChild(newMessage1);
+                        }
+                        i++;
+                    }
+                    console.log(data);
+                })
+                .catch(error => {
+                    // Handle API error
+                    console.error(error);
+                });
+
+
+
+            chatContainer.scrollTo(0, chatContainer.scrollHeight);
+        }
+
+        sendButton.addEventListener("click", sendMessage);
+        inputField.addEventListener("keydown", function(event) {
+            if (event.key === "Enter") {
+                sendMessage();
+            }
+        });
+    </script>
+</body>
+
+</html>
