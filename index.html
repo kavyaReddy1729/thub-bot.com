@@ -42,6 +42,8 @@
             width: fit-content;
             text-align: left;
             white-space: pre-wrap;
+            max-width: 270px;
+            margin-left: auto;
 
 
         }
@@ -93,7 +95,7 @@
 
         .loading {
             display: flex;
-            margin-top: 400px;
+            margin-top: 330px;
             margin-bottom: 5px;
             position: absolute;
             justify-content: flex-start;
@@ -164,7 +166,7 @@
 <body>
     <div class="chat-container">
 
-        <div class="receiver">Hi, I am JamesHardie Chatbot! I can help you with JamesHardie Questions.</div>
+        <div class="receiver">Hi, I am Setuserv Chatbot! I can help you with Setuserv Questions.</div>
         <div class="loading hidden">
             <span class="dots"></span>
             <span class="dots"></span>
@@ -202,16 +204,16 @@
             console.log("messageeeee!!!", message)
             chatContainer.appendChild(newMessage);
             inputField.value = "";
-            formData.append("chat_bot", "James_bot")
+            formData.append("chat_bot", "setu_bot")
             formData.append("question", message)
             console.log("out response!!!")
             let data = {
-                chat_bot: "James_bot",
+                chat_bot: "setu_bot",
                 question: message
             };
             const loading = document.querySelector('.loading');
             loading.classList.remove('hidden');
-            let url = "https://15e8-103-217-239-66.ngrok-free.app/wix_langchain_method/";
+            let url = "https://3d5f-35-85-233-34.ngrok-free.app/wix_langchain_method/";
             //fetch(url,{method: 'POST'})
             fetch(url, {
                     method: 'POST',
